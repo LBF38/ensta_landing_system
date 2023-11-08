@@ -2,8 +2,17 @@
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
 <nta>
 	<declaration>// Place global declarations here.
+// RED LIGHT
 chan red_activate;
-chan red_deactivate;</declaration>
+chan red_deactivate;
+// ORANGE LIGHT
+chan orange_activate;
+chan orange_deactivate;
+// GREEN LIGHT
+chan green_activate;
+chan green_deactivate;
+// Emergency Handle
+chan emergency;</declaration>
 	<template>
 		<name x="9" y="9">Pilot_interface</name>
 		<declaration>// Place local declarations here.
@@ -14,51 +23,103 @@ chan red_deactivate;</declaration>
 		<location id="id1" x="-1079" y="-272">
 			<name x="-1207" y="-289">handle_down</name>
 		</location>
-		<location id="id2" x="-340" y="-289">
-			<name x="-416" y="-331">emergency_handle</name>
+		<location id="id2" x="-901" y="-416">
+			<name x="-977" y="-458">emergency_handle</name>
 		</location>
 		<init ref="id1"/>
 		<transition id="id3">
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-1139" y="-408">emergency!</label>
+			<nail x="-1054" y="-382"/>
+		</transition>
+		<transition id="id4">
 			<source ref="id0"/>
 			<target ref="id1"/>
 			<label kind="synchronisation" x="-1054" y="-221">red_deactivate!</label>
 			<nail x="-994" y="-238"/>
 		</transition>
-		<transition id="id4">
+		<transition id="id5">
 			<source ref="id1"/>
 			<target ref="id0"/>
-			<label kind="synchronisation" x="-1054" y="-331">red_activate!</label>
+			<label kind="synchronisation" x="-1037" y="-331">red_activate!</label>
 			<nail x="-994" y="-297"/>
 		</transition>
 	</template>
 	<template>
-		<name>Red_light</name>
-		<location id="id5" x="-255" y="-17">
+		<name>red_light</name>
+		<location id="id6" x="-255" y="-17">
 			<name x="-365" y="-34">switch_off</name>
 		</location>
-		<location id="id6" x="-51" y="-17">
+		<location id="id7" x="-51" y="-17">
 			<name x="-34" y="-25">switch_on</name>
 		</location>
-		<init ref="id5"/>
-		<transition id="id7">
-			<source ref="id5"/>
-			<target ref="id6"/>
+		<init ref="id6"/>
+		<transition id="id8">
+			<source ref="id6"/>
+			<target ref="id7"/>
 			<label kind="synchronisation" x="-187" y="-102">red_activate?</label>
 			<nail x="-144" y="-76"/>
 		</transition>
-		<transition id="id8">
-			<source ref="id6"/>
-			<target ref="id5"/>
+		<transition id="id9">
+			<source ref="id7"/>
+			<target ref="id6"/>
 			<label kind="synchronisation" x="-187" y="51">red_deactivate?</label>
 			<nail x="-144" y="51"/>
 		</transition>
 	</template>
+	<template>
+		<name>orange_light</name>
+		<location id="id10" x="-145" y="-17">
+			<name x="-255" y="-34">switch_off</name>
+		</location>
+		<location id="id11" x="59" y="-17">
+			<name x="76" y="-25">switch_on</name>
+		</location>
+		<init ref="id10"/>
+		<transition id="id12">
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-77" y="-102">orange_activate?</label>
+			<nail x="-34" y="-76"/>
+		</transition>
+		<transition id="id13">
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-77" y="51">orange_deactivate?</label>
+			<nail x="-34" y="51"/>
+		</transition>
+	</template>
+	<template>
+		<name>green_light</name>
+		<location id="id14" x="-204" y="-34">
+			<name x="-314" y="-51">switch_off</name>
+		</location>
+		<location id="id15" x="0" y="-34">
+			<name x="17" y="-42">switch_on</name>
+		</location>
+		<init ref="id14"/>
+		<transition id="id16">
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="-136" y="-119">green_activate?</label>
+			<nail x="-93" y="-93"/>
+		</transition>
+		<transition id="id17">
+			<source ref="id15"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-136" y="34">green_deactivate?</label>
+			<nail x="-93" y="34"/>
+		</transition>
+	</template>
 	<system>// Instanciations of templates
-redLight = Red_light();
+redLight = red_light();
+orangeLight = orange_light();
+greenLight = green_light();
 pilotInterface = Pilot_interface();
 
 // List one or more processes to be composed into a system.
-system redLight,pilotInterface;
+system pilotInterface, redLight, orangeLight, greenLight;
 </system>
 	<queries>
 		<query>
