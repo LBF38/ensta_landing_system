@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+</declaration>
+	<template>
+		<name x="5" y="5">Pilot_interface</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="-357" y="-221">
+			<name x="-408" y="-255">green light</name>
+		</location>
+		<location id="id1" x="-365" y="-136">
+			<name x="-416" y="-170">orange light</name>
+		</location>
+		<location id="id2" x="-365" y="-59">
+			<name x="-416" y="-93">red light</name>
+		</location>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+</system>
+	<queries>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+	</queries>
+</nta>
