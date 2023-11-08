@@ -2,25 +2,63 @@
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
 <nta>
 	<declaration>// Place global declarations here.
-</declaration>
+chan red_activate;
+chan red_deactivate;</declaration>
 	<template>
-		<name x="5" y="5">Pilot_interface</name>
+		<name x="9" y="9">Pilot_interface</name>
 		<declaration>// Place local declarations here.
 </declaration>
-		<location id="id0" x="-357" y="-221">
-			<name x="-408" y="-255">green light</name>
+		<location id="id0" x="-909" y="-272">
+			<name x="-884" y="-289">handle_up</name>
 		</location>
-		<location id="id1" x="-365" y="-136">
-			<name x="-416" y="-170">orange light</name>
+		<location id="id1" x="-1079" y="-272">
+			<name x="-1207" y="-289">handle_down</name>
 		</location>
-		<location id="id2" x="-365" y="-59">
-			<name x="-416" y="-93">red light</name>
+		<location id="id2" x="-340" y="-289">
+			<name x="-416" y="-331">emergency_handle</name>
 		</location>
+		<init ref="id1"/>
+		<transition id="id3">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-1054" y="-221">red_deactivate!</label>
+			<nail x="-994" y="-238"/>
+		</transition>
+		<transition id="id4">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-1054" y="-331">red_activate!</label>
+			<nail x="-994" y="-297"/>
+		</transition>
 	</template>
-	<system>// Place template instantiations here.
-Process = Template();
+	<template>
+		<name>Red_light</name>
+		<location id="id5" x="-255" y="-17">
+			<name x="-365" y="-34">switch_off</name>
+		</location>
+		<location id="id6" x="-51" y="-17">
+			<name x="-34" y="-25">switch_on</name>
+		</location>
+		<init ref="id5"/>
+		<transition id="id7">
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-187" y="-102">red_activate?</label>
+			<nail x="-144" y="-76"/>
+		</transition>
+		<transition id="id8">
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-187" y="51">red_deactivate?</label>
+			<nail x="-144" y="51"/>
+		</transition>
+	</template>
+	<system>// Instanciations of templates
+redLight = Red_light();
+pilotInterface = Pilot_interface();
+
 // List one or more processes to be composed into a system.
-system Process;
+system redLight,pilotInterface;
 </system>
 	<queries>
 		<query>
