@@ -50,133 +50,389 @@ bool E_general_active;</declaration>
 		</transition>
 	</template>
 	<template>
-		<name>ev_general</name>
-		<declaration>int Hin, Hout;
-clock time;
-</declaration>
-		<location id="id6" x="-731" y="-34">
-			<name x="-757" y="-68">closed</name>
-		</location>
-		<location id="id7" x="-535" y="-102">
-			<name x="-577" y="-136">int_closed</name>
-		</location>
-		<location id="id8" x="-323" y="-42">
-			<name x="-349" y="-76">opened</name>
-		</location>
-		<location id="id9" x="-544" y="42">
-			<name x="-586" y="59">int_opened</name>
-		</location>
-		<location id="id10" x="-782" y="-178">
-			<name x="-841" y="-221">error_closed</name>
-		</location>
-		<location id="id11" x="-280" y="76">
-			<name x="-323" y="93">error_opened</name>
-		</location>
-		<init ref="id6"/>
-		<transition id="id12">
-			<source ref="id6"/>
-			<target ref="id10"/>
-		</transition>
-		<transition id="id13">
-			<source ref="id7"/>
-			<target ref="id10"/>
-		</transition>
-		<transition id="id14">
-			<source ref="id9"/>
-			<target ref="id11"/>
-		</transition>
-		<transition id="id15">
-			<source ref="id8"/>
-			<target ref="id11"/>
-		</transition>
-		<transition id="id16">
-			<source ref="id9"/>
-			<target ref="id6"/>
-			<label kind="guard" x="-740" y="4">time&gt;=3.6</label>
-			<label kind="assignment" x="-722" y="34">Hout=0</label>
-		</transition>
-		<transition id="id17">
-			<source ref="id8"/>
-			<target ref="id9"/>
-			<label kind="synchronisation" x="-526" y="-17">E_general?</label>
-		</transition>
-		<transition id="id18">
-			<source ref="id7"/>
-			<target ref="id8"/>
-			<label kind="guard" x="-467" y="-102">time&gt;=1</label>
-			<label kind="assignment" x="-517" y="-72">Hout=Hin</label>
-		</transition>
-		<transition id="id19">
-			<source ref="id6"/>
-			<target ref="id7"/>
-			<label kind="synchronisation" x="-697" y="-102">E_general?</label>
-			<label kind="assignment" x="-637" y="-68">time=0</label>
-		</transition>
-	</template>
-	<template>
 		<name>red_light</name>
-		<location id="id20" x="-255" y="-17">
+		<location id="id6" x="-255" y="-17">
 			<name x="-365" y="-34">switch_off</name>
 		</location>
-		<location id="id21" x="-51" y="-17">
+		<location id="id7" x="-51" y="-17">
 			<name x="-34" y="-25">switch_on</name>
 		</location>
-		<init ref="id20"/>
-		<transition id="id22">
-			<source ref="id20"/>
-			<target ref="id21"/>
+		<init ref="id6"/>
+		<transition id="id8">
+			<source ref="id6"/>
+			<target ref="id7"/>
 			<label kind="synchronisation" x="-187" y="-102">red_activate?</label>
 			<nail x="-144" y="-76"/>
 		</transition>
-		<transition id="id23">
-			<source ref="id21"/>
-			<target ref="id20"/>
+		<transition id="id9">
+			<source ref="id7"/>
+			<target ref="id6"/>
 			<label kind="synchronisation" x="-187" y="51">red_deactivate?</label>
 			<nail x="-144" y="51"/>
 		</transition>
 	</template>
 	<template>
 		<name>orange_light</name>
-		<location id="id24" x="-145" y="-17">
+		<location id="id10" x="-145" y="-17">
 			<name x="-255" y="-34">switch_off</name>
 		</location>
-		<location id="id25" x="59" y="-17">
+		<location id="id11" x="59" y="-17">
 			<name x="76" y="-25">switch_on</name>
 		</location>
-		<init ref="id24"/>
-		<transition id="id26">
-			<source ref="id24"/>
-			<target ref="id25"/>
+		<init ref="id10"/>
+		<transition id="id12">
+			<source ref="id10"/>
+			<target ref="id11"/>
 			<label kind="synchronisation" x="-77" y="-102">orange_activate?</label>
 			<nail x="-34" y="-76"/>
 		</transition>
-		<transition id="id27">
-			<source ref="id25"/>
-			<target ref="id24"/>
+		<transition id="id13">
+			<source ref="id11"/>
+			<target ref="id10"/>
 			<label kind="synchronisation" x="-77" y="51">orange_deactivate?</label>
 			<nail x="-34" y="51"/>
 		</transition>
 	</template>
 	<template>
 		<name>green_light</name>
-		<location id="id28" x="-204" y="-34">
+		<location id="id14" x="-204" y="-34">
 			<name x="-314" y="-51">switch_off</name>
 		</location>
-		<location id="id29" x="0" y="-34">
+		<location id="id15" x="0" y="-34">
 			<name x="17" y="-42">switch_on</name>
 		</location>
-		<init ref="id28"/>
-		<transition id="id30">
-			<source ref="id28"/>
-			<target ref="id29"/>
+		<init ref="id14"/>
+		<transition id="id16">
+			<source ref="id14"/>
+			<target ref="id15"/>
 			<label kind="synchronisation" x="-136" y="-119">green_activate?</label>
 			<nail x="-93" y="-93"/>
 		</transition>
-		<transition id="id31">
-			<source ref="id29"/>
-			<target ref="id28"/>
+		<transition id="id17">
+			<source ref="id15"/>
+			<target ref="id14"/>
 			<label kind="synchronisation" x="-136" y="34">green_deactivate?</label>
 			<nail x="-93" y="34"/>
+		</transition>
+	</template>
+	<template>
+		<name>EV_general</name>
+		<declaration>int Hin, Hout;
+clock time;
+</declaration>
+		<location id="id18" x="-731" y="-34">
+			<name x="-757" y="-68">closed</name>
+		</location>
+		<location id="id19" x="-535" y="-102">
+			<name x="-577" y="-136">int_closed</name>
+		</location>
+		<location id="id20" x="-323" y="-42">
+			<name x="-349" y="-76">opened</name>
+		</location>
+		<location id="id21" x="-544" y="42">
+			<name x="-586" y="59">int_opened</name>
+		</location>
+		<location id="id22" x="-782" y="-178">
+			<name x="-841" y="-221">error_closed</name>
+		</location>
+		<location id="id23" x="-280" y="76">
+			<name x="-323" y="93">error_opened</name>
+		</location>
+		<init ref="id18"/>
+		<transition id="id24">
+			<source ref="id18"/>
+			<target ref="id22"/>
+		</transition>
+		<transition id="id25">
+			<source ref="id19"/>
+			<target ref="id22"/>
+		</transition>
+		<transition id="id26">
+			<source ref="id21"/>
+			<target ref="id23"/>
+		</transition>
+		<transition id="id27">
+			<source ref="id20"/>
+			<target ref="id23"/>
+		</transition>
+		<transition id="id28">
+			<source ref="id21"/>
+			<target ref="id18"/>
+			<label kind="guard" x="-740" y="4">time&gt;=3.6</label>
+			<label kind="assignment" x="-722" y="34">Hout=0</label>
+		</transition>
+		<transition id="id29">
+			<source ref="id20"/>
+			<target ref="id21"/>
+			<label kind="synchronisation" x="-526" y="-17">E_general?</label>
+		</transition>
+		<transition id="id30">
+			<source ref="id19"/>
+			<target ref="id20"/>
+			<label kind="guard" x="-467" y="-102">time&gt;=1</label>
+			<label kind="assignment" x="-517" y="-72">Hout=Hin</label>
+		</transition>
+		<transition id="id31">
+			<source ref="id18"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-697" y="-102">E_general?</label>
+			<label kind="assignment" x="-637" y="-68">time=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>EV_closedoors</name>
+		<declaration>int Hin, Hout;
+clock time;
+</declaration>
+		<location id="id32" x="-374" y="-3630">
+			<name x="-400" y="-3664">closed</name>
+		</location>
+		<location id="id33" x="-425" y="-3774">
+			<name x="-484" y="-3817">error_closed</name>
+		</location>
+		<location id="id34" x="-178" y="-3698">
+			<name x="-220" y="-3732">int_closed</name>
+		</location>
+		<location id="id35" x="-187" y="-3554">
+			<name x="-229" y="-3537">int_opened</name>
+		</location>
+		<location id="id36" x="77" y="-3520">
+			<name x="34" y="-3503">error_opened</name>
+		</location>
+		<location id="id37" x="34" y="-3638">
+			<name x="8" y="-3672">opened</name>
+		</location>
+		<init ref="id32"/>
+		<transition id="id38">
+			<source ref="id32"/>
+			<target ref="id33"/>
+		</transition>
+		<transition id="id39">
+			<source ref="id34"/>
+			<target ref="id33"/>
+		</transition>
+		<transition id="id40">
+			<source ref="id35"/>
+			<target ref="id36"/>
+		</transition>
+		<transition id="id41">
+			<source ref="id37"/>
+			<target ref="id36"/>
+		</transition>
+		<transition id="id42">
+			<source ref="id35"/>
+			<target ref="id32"/>
+			<label kind="guard" x="-383" y="-3592">time&gt;=3.6</label>
+			<label kind="assignment" x="-365" y="-3562">Hout=0</label>
+		</transition>
+		<transition id="id43">
+			<source ref="id37"/>
+			<target ref="id35"/>
+			<label kind="synchronisation" x="-169" y="-3613">E_general?</label>
+		</transition>
+		<transition id="id44">
+			<source ref="id34"/>
+			<target ref="id37"/>
+			<label kind="guard" x="-110" y="-3698">time&gt;=1</label>
+			<label kind="assignment" x="-160" y="-3668">Hout=Hin</label>
+		</transition>
+		<transition id="id45">
+			<source ref="id32"/>
+			<target ref="id34"/>
+			<label kind="synchronisation" x="-340" y="-3698">E_general?</label>
+			<label kind="assignment" x="-280" y="-3664">time=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>EV_opendoors</name>
+		<declaration>int Hin, Hout;
+clock time;
+</declaration>
+		<location id="id46" x="-357" y="-17">
+			<name x="-383" y="-51">closed</name>
+		</location>
+		<location id="id47" x="-408" y="-161">
+			<name x="-467" y="-204">error_closed</name>
+		</location>
+		<location id="id48" x="-161" y="-85">
+			<name x="-203" y="-119">int_closed</name>
+		</location>
+		<location id="id49" x="-170" y="59">
+			<name x="-212" y="76">int_opened</name>
+		</location>
+		<location id="id50" x="94" y="93">
+			<name x="51" y="110">error_opened</name>
+		</location>
+		<location id="id51" x="51" y="-25">
+			<name x="25" y="-59">opened</name>
+		</location>
+		<init ref="id46"/>
+		<transition id="id52">
+			<source ref="id46"/>
+			<target ref="id47"/>
+		</transition>
+		<transition id="id53">
+			<source ref="id48"/>
+			<target ref="id47"/>
+		</transition>
+		<transition id="id54">
+			<source ref="id49"/>
+			<target ref="id50"/>
+		</transition>
+		<transition id="id55">
+			<source ref="id51"/>
+			<target ref="id50"/>
+		</transition>
+		<transition id="id56">
+			<source ref="id49"/>
+			<target ref="id46"/>
+			<label kind="guard" x="-366" y="21">time&gt;=3.6</label>
+			<label kind="assignment" x="-348" y="51">Hout=0</label>
+		</transition>
+		<transition id="id57">
+			<source ref="id51"/>
+			<target ref="id49"/>
+			<label kind="synchronisation" x="-152" y="0">E_general?</label>
+		</transition>
+		<transition id="id58">
+			<source ref="id48"/>
+			<target ref="id51"/>
+			<label kind="guard" x="-93" y="-85">time&gt;=1</label>
+			<label kind="assignment" x="-143" y="-55">Hout=Hin</label>
+		</transition>
+		<transition id="id59">
+			<source ref="id46"/>
+			<target ref="id48"/>
+			<label kind="synchronisation" x="-323" y="-85">E_general?</label>
+			<label kind="assignment" x="-263" y="-51">time=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>EV_retractgears</name>
+		<declaration>int Hin, Hout;
+clock time;
+</declaration>
+		<location id="id60" x="-374" y="-8">
+			<name x="-400" y="-42">closed</name>
+		</location>
+		<location id="id61" x="-425" y="-152">
+			<name x="-484" y="-195">error_closed</name>
+		</location>
+		<location id="id62" x="-178" y="-76">
+			<name x="-220" y="-110">int_closed</name>
+		</location>
+		<location id="id63" x="-187" y="68">
+			<name x="-229" y="85">int_opened</name>
+		</location>
+		<location id="id64" x="77" y="102">
+			<name x="34" y="119">error_opened</name>
+		</location>
+		<location id="id65" x="34" y="-16">
+			<name x="8" y="-50">opened</name>
+		</location>
+		<init ref="id60"/>
+		<transition id="id66">
+			<source ref="id60"/>
+			<target ref="id61"/>
+		</transition>
+		<transition id="id67">
+			<source ref="id62"/>
+			<target ref="id61"/>
+		</transition>
+		<transition id="id68">
+			<source ref="id63"/>
+			<target ref="id64"/>
+		</transition>
+		<transition id="id69">
+			<source ref="id65"/>
+			<target ref="id64"/>
+		</transition>
+		<transition id="id70">
+			<source ref="id63"/>
+			<target ref="id60"/>
+			<label kind="guard" x="-383" y="30">time&gt;=3.6</label>
+			<label kind="assignment" x="-365" y="60">Hout=0</label>
+		</transition>
+		<transition id="id71">
+			<source ref="id65"/>
+			<target ref="id63"/>
+			<label kind="synchronisation" x="-169" y="9">E_general?</label>
+		</transition>
+		<transition id="id72">
+			<source ref="id62"/>
+			<target ref="id65"/>
+			<label kind="guard" x="-110" y="-76">time&gt;=1</label>
+			<label kind="assignment" x="-160" y="-46">Hout=Hin</label>
+		</transition>
+		<transition id="id73">
+			<source ref="id60"/>
+			<target ref="id62"/>
+			<label kind="synchronisation" x="-340" y="-76">E_general?</label>
+			<label kind="assignment" x="-280" y="-42">time=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>EV_extendgears</name>
+		<declaration>int Hin, Hout;
+clock time;
+</declaration>
+		<location id="id74" x="-332" y="0">
+			<name x="-358" y="-34">closed</name>
+		</location>
+		<location id="id75" x="-383" y="-144">
+			<name x="-442" y="-187">error_closed</name>
+		</location>
+		<location id="id76" x="-136" y="-68">
+			<name x="-178" y="-102">int_closed</name>
+		</location>
+		<location id="id77" x="-145" y="76">
+			<name x="-187" y="93">int_opened</name>
+		</location>
+		<location id="id78" x="119" y="110">
+			<name x="76" y="127">error_opened</name>
+		</location>
+		<location id="id79" x="76" y="-8">
+			<name x="50" y="-42">opened</name>
+		</location>
+		<init ref="id74"/>
+		<transition id="id80">
+			<source ref="id74"/>
+			<target ref="id75"/>
+		</transition>
+		<transition id="id81">
+			<source ref="id76"/>
+			<target ref="id75"/>
+		</transition>
+		<transition id="id82">
+			<source ref="id77"/>
+			<target ref="id78"/>
+		</transition>
+		<transition id="id83">
+			<source ref="id79"/>
+			<target ref="id78"/>
+		</transition>
+		<transition id="id84">
+			<source ref="id77"/>
+			<target ref="id74"/>
+			<label kind="guard" x="-341" y="38">time&gt;=3.6</label>
+			<label kind="assignment" x="-323" y="68">Hout=0</label>
+		</transition>
+		<transition id="id85">
+			<source ref="id79"/>
+			<target ref="id77"/>
+			<label kind="synchronisation" x="-127" y="17">E_general?</label>
+		</transition>
+		<transition id="id86">
+			<source ref="id76"/>
+			<target ref="id79"/>
+			<label kind="guard" x="-68" y="-68">time&gt;=1</label>
+			<label kind="assignment" x="-118" y="-38">Hout=Hin</label>
+		</transition>
+		<transition id="id87">
+			<source ref="id74"/>
+			<target ref="id76"/>
+			<label kind="synchronisation" x="-298" y="-68">E_general?</label>
+			<label kind="assignment" x="-238" y="-34">time=0</label>
 		</transition>
 	</template>
 	<system>// Instanciations of templates
@@ -184,6 +440,11 @@ redLight = red_light();
 orangeLight = orange_light();
 greenLight = green_light();
 a_pilot = pilot();
+ev_general = EV_general();
+ev_closedoors = EV_closedoors();
+ev_opendoors = EV_opendoors();
+ev_retractgears = EV_retractgears();
+ev_extendgears = EV_extendgears();
 
 // List one or more processes to be composed into a system.
 system a_pilot, redLight, orangeLight, greenLight;
