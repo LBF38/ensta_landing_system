@@ -3,179 +3,227 @@
 <nta>
 	<declaration>// Place global declarations here.
 // Emergency Handle
-chan emergency;
-// EV General
-chan E_general;</declaration>
+chan emergency;</declaration>
+	<template>
+		<name>Sensor</name>
+		<parameter>bool &amp;is_up, broadcast chan &amp;handle</parameter>
+		<location id="id0" x="-119" y="-136">
+			<name x="-136" y="-178">down</name>
+		</location>
+		<location id="id1" x="-110" y="17">
+			<name x="-119" y="34">up</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id2">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-297" y="-68">handle?</label>
+			<label kind="assignment" x="-297" y="-51">is_up = false</label>
+			<nail x="-178" y="-51"/>
+		</transition>
+		<transition id="id3">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-34" y="-85">handle?</label>
+			<label kind="assignment" x="-34" y="-68">is_up = true</label>
+			<nail x="-42" y="-59"/>
+		</transition>
+	</template>
+	<template>
+		<name>Electrical_order</name>
+		<parameter>broadcast chan &amp;order, bool &amp;condition</parameter>
+		<location id="id4" x="-93" y="-144">
+			<name x="-119" y="-178">no_elec</name>
+		</location>
+		<location id="id5" x="-93" y="25">
+			<name x="-119" y="42">elec</name>
+		</location>
+		<init ref="id4"/>
+		<transition id="id6">
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-331" y="-93">condition == false</label>
+			<label kind="synchronisation" x="-271" y="-76">order!</label>
+			<nail x="-170" y="-51"/>
+		</transition>
+		<transition id="id7">
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="guard" x="0" y="-110">condition == true</label>
+			<label kind="synchronisation" x="0" y="-85">order!</label>
+			<nail x="-8" y="-51"/>
+		</transition>
+	</template>
 	<template>
 		<name x="9" y="9">pilot</name>
-		<parameter>chan &amp;activateAS, chan &amp;deactivateAS</parameter>
+		<parameter>broadcast chan &amp;handle</parameter>
 		<declaration>// Place local declarations here.
 </declaration>
-		<location id="id0" x="-1020" y="-323">
+		<location id="id8" x="-1020" y="-323">
 			<name x="-995" y="-340">handle_up</name>
 		</location>
-		<location id="id1" x="-1190" y="-323">
+		<location id="id9" x="-1190" y="-323">
 			<name x="-1318" y="-340">handle_down</name>
 		</location>
-		<location id="id2" x="-1012" y="-467">
+		<location id="id10" x="-1012" y="-467">
 			<name x="-1088" y="-509">emergency_handle</name>
 		</location>
-		<init ref="id1"/>
-		<transition id="id3">
-			<source ref="id1"/>
-			<target ref="id2"/>
+		<init ref="id9"/>
+		<transition id="id11">
+			<source ref="id9"/>
+			<target ref="id10"/>
 			<label kind="synchronisation" x="-1250" y="-459">emergency!</label>
 			<nail x="-1165" y="-433"/>
 		</transition>
-		<transition id="id4">
-			<source ref="id0"/>
-			<target ref="id1"/>
-			<label kind="synchronisation" x="-1165" y="-272">deactivateAS!</label>
+		<transition id="id12">
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-1139" y="-272">handle!</label>
 			<nail x="-1105" y="-289"/>
 		</transition>
-		<transition id="id5">
-			<source ref="id1"/>
-			<target ref="id0"/>
-			<label kind="synchronisation" x="-1148" y="-382">activateAS!</label>
+		<transition id="id13">
+			<source ref="id9"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-1148" y="-382">handle!</label>
 			<nail x="-1105" y="-348"/>
 		</transition>
 	</template>
 	<template>
 		<name>light</name>
 		<parameter>chan &amp;activate_light, chan &amp;deactivate_light</parameter>
-		<location id="id6" x="-255" y="-17">
+		<location id="id14" x="-255" y="-17">
 			<name x="-365" y="-34">switch_off</name>
 		</location>
-		<location id="id7" x="-51" y="-17">
+		<location id="id15" x="-51" y="-17">
 			<name x="-34" y="-25">switch_on</name>
 		</location>
-		<init ref="id6"/>
-		<transition id="id8">
-			<source ref="id6"/>
-			<target ref="id7"/>
+		<init ref="id14"/>
+		<transition id="id16">
+			<source ref="id14"/>
+			<target ref="id15"/>
 			<label kind="synchronisation" x="-187" y="-102">activate_light?</label>
 			<nail x="-144" y="-76"/>
 		</transition>
-		<transition id="id9">
-			<source ref="id7"/>
-			<target ref="id6"/>
+		<transition id="id17">
+			<source ref="id15"/>
+			<target ref="id14"/>
 			<label kind="synchronisation" x="-187" y="51">deactivate_light?</label>
 			<nail x="-144" y="51"/>
 		</transition>
 	</template>
 	<template>
 		<name>EV_general</name>
+		<parameter>broadcast chan &amp;E_general</parameter>
 		<declaration>int Hin, Hout;
 clock time;
 </declaration>
-		<location id="id10" x="-731" y="-34">
+		<location id="id18" x="-731" y="-34">
 			<name x="-757" y="-68">closed</name>
 		</location>
-		<location id="id11" x="-535" y="-102">
+		<location id="id19" x="-535" y="-102">
 			<name x="-577" y="-136">int_closed</name>
 		</location>
-		<location id="id12" x="-323" y="-42">
+		<location id="id20" x="-323" y="-42">
 			<name x="-349" y="-76">opened</name>
 		</location>
-		<location id="id13" x="-544" y="42">
+		<location id="id21" x="-544" y="42">
 			<name x="-586" y="59">int_opened</name>
 		</location>
-		<location id="id14" x="-782" y="-178">
+		<location id="id22" x="-782" y="-178">
 			<name x="-841" y="-221">error_closed</name>
 		</location>
-		<location id="id15" x="-280" y="76">
+		<location id="id23" x="-280" y="76">
 			<name x="-323" y="93">error_opened</name>
 		</location>
-		<init ref="id10"/>
-		<transition id="id16">
-			<source ref="id10"/>
-			<target ref="id14"/>
+		<init ref="id18"/>
+		<transition id="id24">
+			<source ref="id18"/>
+			<target ref="id22"/>
 		</transition>
-		<transition id="id17">
-			<source ref="id11"/>
-			<target ref="id14"/>
+		<transition id="id25">
+			<source ref="id19"/>
+			<target ref="id22"/>
 		</transition>
-		<transition id="id18">
-			<source ref="id13"/>
-			<target ref="id15"/>
+		<transition id="id26">
+			<source ref="id21"/>
+			<target ref="id23"/>
 		</transition>
-		<transition id="id19">
-			<source ref="id12"/>
-			<target ref="id15"/>
+		<transition id="id27">
+			<source ref="id20"/>
+			<target ref="id23"/>
 		</transition>
-		<transition id="id20">
-			<source ref="id13"/>
-			<target ref="id10"/>
+		<transition id="id28">
+			<source ref="id21"/>
+			<target ref="id18"/>
 			<label kind="guard" x="-740" y="4">time&gt;=3.6</label>
 			<label kind="assignment" x="-722" y="34">Hout=0</label>
 		</transition>
-		<transition id="id21">
-			<source ref="id12"/>
-			<target ref="id13"/>
+		<transition id="id29">
+			<source ref="id20"/>
+			<target ref="id21"/>
 			<label kind="synchronisation" x="-526" y="-17">E_general?</label>
 		</transition>
-		<transition id="id22">
-			<source ref="id11"/>
-			<target ref="id12"/>
+		<transition id="id30">
+			<source ref="id19"/>
+			<target ref="id20"/>
 			<label kind="guard" x="-467" y="-102">time&gt;=1</label>
 			<label kind="assignment" x="-517" y="-72">Hout=Hin</label>
 		</transition>
-		<transition id="id23">
-			<source ref="id10"/>
-			<target ref="id11"/>
+		<transition id="id31">
+			<source ref="id18"/>
+			<target ref="id19"/>
 			<label kind="synchronisation" x="-697" y="-102">E_general?</label>
 			<label kind="assignment" x="-637" y="-68">time=0</label>
 		</transition>
 	</template>
 	<template>
 		<name>AnalogSwitch</name>
-		<parameter>chan &amp;open, chan &amp;close, bool &amp;io_state</parameter>
+		<parameter>broadcast chan &amp;handle, bool &amp;io_state</parameter>
 		<declaration>clock as_timer;
 </declaration>
-		<location id="id24" x="8" y="-68">
+		<location id="id32" x="8" y="-68">
 			<name x="-25" y="-102">Opened</name>
 			<label kind="comments" x="-93" y="-144">L'interrupteur est ouvert
 Le courant ne passe pas</label>
 		</location>
-		<location id="id25" x="8" y="136">
+		<location id="id33" x="8" y="136">
 			<name x="-17" y="153">Closed</name>
 			<label kind="comments" x="-76" y="178">L'interrupteur est fermé
 Le courant passe</label>
 		</location>
-		<location id="id26" x="110" y="34">
+		<location id="id34" x="110" y="34">
 			<name x="127" y="17">Closing</name>
 			<label kind="invariant" x="127" y="34">as_timer &lt;= 80</label>
 			<label kind="comments" x="204" y="8">L'interrupteur est en cours de fermeture</label>
 		</location>
-		<location id="id27" x="-93" y="34">
+		<location id="id35" x="-93" y="34">
 			<name x="-170" y="17">Opening</name>
 			<label kind="invariant" x="-246" y="34">as_timer &lt;= 120</label>
 			<label kind="comments" x="-535" y="8">L'interrupteur est en cours d'ouverture</label>
 		</location>
-		<init ref="id24"/>
-		<transition id="id28">
-			<source ref="id27"/>
-			<target ref="id24"/>
+		<init ref="id32"/>
+		<transition id="id36">
+			<source ref="id35"/>
+			<target ref="id32"/>
 			<label kind="guard" x="-195" y="-68">as_timer &gt;= 120</label>
 			<label kind="assignment" x="-297" y="-51">as_timer = 0, io_state = false</label>
 		</transition>
-		<transition id="id29">
-			<source ref="id25"/>
-			<target ref="id27"/>
+		<transition id="id37">
+			<source ref="id33"/>
+			<target ref="id35"/>
 			<label kind="guard" x="-187" y="102">as_timer &gt;= 2000</label>
-			<label kind="synchronisation" x="-187" y="119">open?</label>
 			<label kind="assignment" x="-187" y="76">as_timer = 0</label>
 		</transition>
-		<transition id="id30">
-			<source ref="id26"/>
-			<target ref="id25"/>
+		<transition id="id38">
+			<source ref="id34"/>
+			<target ref="id33"/>
 			<label kind="guard" x="76" y="76">as_timer &gt;= 80</label>
 			<label kind="assignment" x="76" y="93">as_timer = 0, io_state = true</label>
 		</transition>
-		<transition id="id31">
-			<source ref="id24"/>
-			<target ref="id26"/>
-			<label kind="synchronisation" x="59" y="-59">close?</label>
+		<transition id="id39">
+			<source ref="id32"/>
+			<target ref="id34"/>
+			<label kind="synchronisation" x="59" y="-59">handle?</label>
 			<label kind="assignment" x="59" y="-42">as_timer = 0</label>
 		</transition>
 	</template>
@@ -188,20 +236,28 @@ redLight = light(activate_red, deactivate_red);
 orangeLight = light(activate_orange, deactivate_orange);
 greenLight = light(activate_green, deactivate_green);
 // EVs
-ev_general = EV_general();
-ev_closedoors = EV_general();
-ev_opendoors = EV_general();
-ev_retractgears = EV_general();
-ev_extendgears = EV_general();
-// Analog Switch
-chan open, close;
-bool io_state;
-analog_switch = AnalogSwitch(open,close, io_state);
+broadcast chan activate_ev_gen;
+ev_general = EV_general(activate_ev_gen);
+//ev_closedoors = EV_general();
+//ev_opendoors = EV_general();
+//ev_retractgears = EV_general();
+//ev_extendgears = EV_general();
 // PILOT
-a_pilot = pilot(open,close);
+broadcast chan handle;
+a_pilot = pilot(handle);
+// Analog Switch
+bool io_state;
+analog_switch = AnalogSwitch(handle,io_state);
+// Sensors
+bool is_up;
+bool is_opened;
+handle_sensor = Sensor(is_up, handle);
+as_sensor = Sensor(is_opened, handle);
+// Electrical orders
+elec_order_ev_gen = Electrical_order(activate_ev_gen, io_state);
 
 // List one or more processes to be composed into a system.
-system a_pilot, redLight, orangeLight, greenLight, ev_general, analog_switch;
+system a_pilot, redLight, orangeLight, greenLight, ev_general, analog_switch,handle_sensor,as_sensor,elec_order_ev_gen;
 </system>
 	<queries>
 		<query>
