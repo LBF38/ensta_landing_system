@@ -56,7 +56,7 @@ chan emergency;</declaration>
 	</template>
 	<template>
 		<name>Door_Cylinder</name>
-		<parameter>broadcast chan &amp;ev_signal,broadcast chan &amp;signal_sensor_open, broadcast chan &amp;signal_sensor_closed,int t1,int t2, int t3, int t4, int t5, int t6</parameter>
+		<parameter>broadcast chan &amp;ev_signal_open,broadcast chan &amp;ev_signal_close,broadcast chan &amp;signal_sensor_open, broadcast chan &amp;signal_sensor_closed,int t1,int t2, int t3, int t4, int t5, int t6</parameter>
 		<declaration>clock timer;</declaration>
 		<location id="id8" x="-187" y="-425">
 			<name x="-255" y="-459">closed_locked</name>
@@ -76,7 +76,7 @@ chan emergency;</declaration>
 		<location id="id13" x="-68" y="-297">
 			<name x="-78" y="-331">unlocked_closed</name>
 		</location>
-		<init ref="id10"/>
+		<init ref="id8"/>
 		<transition id="id14">
 			<source ref="id13"/>
 			<target ref="id9"/>
@@ -101,7 +101,7 @@ chan emergency;</declaration>
 		<transition id="id17">
 			<source ref="id10"/>
 			<target ref="id12"/>
-			<label kind="synchronisation" x="-323" y="-93">ev_signal?</label>
+			<label kind="synchronisation" x="-374" y="-93">ev_signal_close?</label>
 			<label kind="assignment" x="-323" y="-110">timer=0</label>
 		</transition>
 		<transition id="id18">
@@ -114,7 +114,7 @@ chan emergency;</declaration>
 		<transition id="id19">
 			<source ref="id8"/>
 			<target ref="id13"/>
-			<label kind="synchronisation" x="-119" y="-382">ev_signal?</label>
+			<label kind="synchronisation" x="-119" y="-382">ev_signal_open?</label>
 			<label kind="assignment" x="-110" y="-365">timer=0</label>
 		</transition>
 	</template>
@@ -422,7 +422,7 @@ clock time;
 		<location id="id73" x="-110" y="17">
 			<name x="-153" y="34">state_false</name>
 		</location>
-		<init ref="id72"/>
+		<init ref="id73"/>
 		<transition id="id74">
 			<source ref="id73"/>
 			<target ref="id72"/>
@@ -447,7 +447,7 @@ clock time;
 		<location id="id77" x="-110" y="17">
 			<name x="-153" y="34">state_true</name>
 		</location>
-		<init ref="id76"/>
+		<init ref="id77"/>
 		<transition id="id78">
 			<source ref="id77"/>
 			<target ref="id76"/>
@@ -490,7 +490,7 @@ clock time;
 	</template>
 	<template>
 		<name>Gear_Cylinder</name>
-		<parameter>broadcast chan &amp;ev_signal,broadcast chan &amp;signal_sensor_down, broadcast chan &amp;signal_sensor_up,int t1,int t2, int t3, int t4, int t5, int t6, int t7, int t8</parameter>
+		<parameter>broadcast chan &amp;ev_signal_up,broadcast chan &amp;ev_signal_down,broadcast chan &amp;signal_sensor_down, broadcast chan &amp;signal_sensor_up,int t1,int t2, int t3, int t4, int t5, int t6, int t7, int t8</parameter>
 		<declaration>clock timer;</declaration>
 		<location id="id84" x="-187" y="-425">
 			<name x="-204" y="-459">down</name>
@@ -527,8 +527,8 @@ clock time;
 		<transition id="id93">
 			<source ref="id86"/>
 			<target ref="id91"/>
-			<label kind="synchronisation" x="-306" y="-85">ev_signal?</label>
-			<label kind="assignment" x="-306" y="-68">timer=0</label>
+			<label kind="synchronisation" x="-357" y="-85">ev_signal_down?</label>
+			<label kind="assignment" x="-357" y="-68">timer=0</label>
 		</transition>
 		<transition id="id94">
 			<source ref="id90"/>
@@ -540,7 +540,7 @@ clock time;
 		<transition id="id95">
 			<source ref="id84"/>
 			<target ref="id90"/>
-			<label kind="synchronisation" x="-153" y="-459">ev_signal?</label>
+			<label kind="synchronisation" x="-153" y="-459">ev_signal_up?</label>
 			<label kind="assignment" x="-153" y="-442">timer=0</label>
 		</transition>
 		<transition id="id96">
@@ -584,20 +584,22 @@ greenLight = light(switch_green); // TODO: make it start switched on.
 // EVs
 broadcast chan activate_ev_gen, gen_pressure;
 broadcast chan activate_ev_cd, cd_pressure;
+broadcast chan activate_ev_od, od_pressure;
 broadcast chan activate_ev_rg,rg_pressure;
+broadcast chan activate_ev_eg,eg_pressure;
 
 ev_general = EV_gen(activate_ev_gen, gen_pressure);
 ev_closedoors = EV(activate_ev_cd, gen_pressure, cd_pressure);
-//ev_opendoors = EV();
+ev_opendoors = EV(activate_ev_od,gen_pressure,od_pressure);
 ev_retractgears = EV(activate_ev_rg,gen_pressure,rg_pressure);
-//ev_extendgears = EV();
+ev_extendgears = EV(activate_ev_eg,gen_pressure,eg_pressure);
 
 // Cylinders
 broadcast chan door_open,door_closed;
-cyl_door_front = Door_Cylinder(cd_pressure,door_open,door_closed,24,36,96,144,32,48);
+cyl_door_front = Door_Cylinder(od_pressure,cd_pressure,door_open,door_closed,24,36,96,144,32,48);
 
 broadcast chan gear_extended,gear_retracted;
-cyl_gear_front = Gear_Cylinder(rg_pressure,gear_extended,gear_retracted,64,96,128,192,32,48,96,144);
+cyl_gear_front = Gear_Cylinder(rg_pressure,eg_pressure,gear_extended,gear_retracted,64,96,128,192,32,48,96,144);
 
 // PILOT
 broadcast chan handle;
@@ -618,31 +620,31 @@ bool is_gen_pressurized;
 
 handle_sensor = Sensor_handle(is_up, handle);
 as_sensor = Sensor_as(is_opened, handle);
-front_gear_extended_sensor = Sensor_gear_extended(is_gear_extended,gear_extended);
-front_gear_retracted_sensor = Sensor_gear_retracted(is_gear_retracted,gear_retracted);
-front_door_closed_sensor = Sensor_door_closed(is_door_closed,door_closed);
-front_door_open_sensor = Sensor_door_open(is_door_open,door_open);
-
-
 
 gen_pressure_sensor = Sensor_circuit_pressurized(is_gen_pressurized,gen_pressure);
 
+front_door_closed_sensor = Sensor_door_closed(is_door_closed,door_closed);
+front_door_open_sensor = Sensor_door_open(is_door_open,door_open);
 
+front_gear_extended_sensor = Sensor_gear_extended(is_gear_extended,gear_extended);
+front_gear_retracted_sensor = Sensor_gear_retracted(is_gear_retracted,gear_retracted);
 
 // Electrical orders
 elec_order_ev_gen = Electrical_order(activate_ev_gen, io_state);
 elec_order_ev_cd = Electrical_order(activate_ev_cd,is_gen_pressurized);
+elec_order_ev_od = Electrical_order(activate_ev_od,is_gen_pressurized);
 elec_order_ev_rg = Electrical_order(activate_ev_rg,is_gen_pressurized);
+elec_order_ev_eg = Electrical_order(activate_ev_eg,is_gen_pressurized);
 
 
 // List one or more processes to be composed into a system.
 system a_pilot, analog_switch,
 redLight, orangeLight, greenLight, 
-ev_general,ev_closedoors,ev_retractgears,
+ev_general,ev_closedoors,ev_opendoors,ev_retractgears,ev_extendgears,
 handle_sensor,as_sensor,gen_pressure_sensor,
 front_door_closed_sensor,front_door_open_sensor,
 front_gear_extended_sensor,front_gear_retracted_sensor,
-elec_order_ev_gen,elec_order_ev_cd,elec_order_ev_rg,
+elec_order_ev_gen,elec_order_ev_cd,elec_order_ev_od,elec_order_ev_rg,elec_order_ev_eg,
 cyl_door_front,cyl_gear_front;
 </system>
 	<queries>
