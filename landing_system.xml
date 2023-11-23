@@ -82,18 +82,21 @@ chan emergency;</declaration>
 			<target ref="id9"/>
 			<label kind="guard" x="-51" y="-263">timer&gt;=t1 &amp;&amp; timer&lt;=t2</label>
 			<label kind="synchronisation" x="-51" y="-246">signal_sensor_closed!</label>
+			<label kind="assignment" x="-51" y="-229">timer=0</label>
 		</transition>
 		<transition id="id15">
 			<source ref="id12"/>
 			<target ref="id11"/>
 			<label kind="guard" x="-493" y="-255">timer&gt;=t5 &amp;&amp; timer&lt;=t6</label>
 			<label kind="synchronisation" x="-467" y="-238">signal_sensor_open!</label>
+			<label kind="assignment" x="-459" y="-221">timer=0</label>
 		</transition>
 		<transition id="id16">
 			<source ref="id11"/>
 			<target ref="id8"/>
 			<label kind="guard" x="-433" y="-399">timer&gt;=t3 &amp;&amp; timer&lt;=t4</label>
 			<label kind="synchronisation" x="-433" y="-382">signal_sensor_closed!</label>
+			<label kind="assignment" x="-433" y="-365">timer=0</label>
 		</transition>
 		<transition id="id17">
 			<source ref="id10"/>
@@ -104,8 +107,9 @@ chan emergency;</declaration>
 		<transition id="id18">
 			<source ref="id9"/>
 			<target ref="id10"/>
-			<label kind="guard" x="-119" y="-127">timer&gt;=t3 &amp;&amp; timer&lt;=t4</label>
-			<label kind="synchronisation" x="-119" y="-110">signal_sensor_open!</label>
+			<label kind="guard" x="-120" y="-131">timer&gt;=t3 &amp;&amp; timer&lt;=t4</label>
+			<label kind="synchronisation" x="-120" y="-114">signal_sensor_open!</label>
+			<label kind="assignment" x="-119" y="-93">timer=0</label>
 		</transition>
 		<transition id="id19">
 			<source ref="id8"/>
@@ -385,13 +389,13 @@ clock time;
 		</transition>
 	</template>
 	<template>
-		<name>Sensor_door_open</name>
+		<name>Sensor_gear_retracted</name>
 		<parameter>bool &amp;switch, broadcast chan &amp;handle</parameter>
 		<location id="id68" x="-119" y="-136">
-			<name x="-170" y="-170">state_true</name>
+			<name x="-170" y="-170">state_false</name>
 		</location>
 		<location id="id69" x="-110" y="17">
-			<name x="-153" y="34">state_false</name>
+			<name x="-153" y="34">state_true</name>
 		</location>
 		<init ref="id68"/>
 		<transition id="id70">
@@ -410,13 +414,13 @@ clock time;
 		</transition>
 	</template>
 	<template>
-		<name>Sensor_gear_retracted</name>
+		<name>Sensor_door_open</name>
 		<parameter>bool &amp;switch, broadcast chan &amp;handle</parameter>
 		<location id="id72" x="-119" y="-136">
-			<name x="-170" y="-170">state_false</name>
+			<name x="-170" y="-170">state_true</name>
 		</location>
 		<location id="id73" x="-110" y="17">
-			<name x="-153" y="34">state_true</name>
+			<name x="-153" y="34">state_false</name>
 		</location>
 		<init ref="id72"/>
 		<transition id="id74">
@@ -486,43 +490,84 @@ clock time;
 	</template>
 	<template>
 		<name>Gear_Cylinder</name>
-		<parameter>bool &amp;is_pressure,broadcast chan &amp;signal_sensor,int t1,int t2, int t3, int t4, int t5, int t6</parameter>
+		<parameter>broadcast chan &amp;ev_signal,broadcast chan &amp;signal_sensor_down, broadcast chan &amp;signal_sensor_up,int t1,int t2, int t3, int t4, int t5, int t6, int t7, int t8</parameter>
 		<declaration>clock timer;</declaration>
-		<location id="id84" x="-153" y="-340">
-			<name x="-170" y="-374">down</name>
+		<location id="id84" x="-187" y="-425">
+			<name x="-204" y="-459">down</name>
 		</location>
-		<location id="id85" x="-25" y="-246">
-			<name x="-8" y="-255">unlocked_down</name>
+		<location id="id85" x="-93" y="-119">
+			<name x="-76" y="-127">update_sensors_up</name>
 		</location>
-		<location id="id86" x="-136" y="-136">
-			<name x="-144" y="-119">up</name>
+		<location id="id86" x="-187" y="-76">
+			<name x="-195" y="-51">up</name>
 		</location>
-		<location id="id87" x="-255" y="-238">
-			<name x="-374" y="-246">unlocked_up</name>
+		<location id="id87" x="-272" y="-374">
+			<name x="-459" y="-382">update_sensors_down</name>
+		</location>
+		<location id="id88" x="-297" y="-255">
+			<name x="-425" y="-263">moving_down</name>
+		</location>
+		<location id="id89" x="-68" y="-246">
+			<name x="-51" y="-255">moving_up</name>
+		</location>
+		<location id="id90" x="-76" y="-365">
+			<name x="-86" y="-399">unlocked_down</name>
+		</location>
+		<location id="id91" x="-272" y="-119">
+			<name x="-391" y="-127">unlocked_up</name>
 		</location>
 		<init ref="id84"/>
-		<transition id="id88">
+		<transition id="id92">
+			<source ref="id91"/>
+			<target ref="id88"/>
+			<label kind="guard" x="-493" y="-195">timer&gt;=t1 &amp;&amp; timer&lt;=t2</label>
+			<label kind="synchronisation" x="-493" y="-178">signal_sensor_up!</label>
+			<label kind="assignment" x="-501" y="-161">timer=0</label>
+		</transition>
+		<transition id="id93">
+			<source ref="id86"/>
+			<target ref="id91"/>
+			<label kind="synchronisation" x="-306" y="-85">ev_signal?</label>
+			<label kind="assignment" x="-306" y="-68">timer=0</label>
+		</transition>
+		<transition id="id94">
+			<source ref="id90"/>
+			<target ref="id89"/>
+			<label kind="guard" x="-72" y="-339">timer&gt;=t1 &amp;&amp; timer&lt;=t2</label>
+			<label kind="synchronisation" x="-72" y="-322">signal_sensor_down!</label>
+			<label kind="assignment" x="-72" y="-305">timer=0</label>
+		</transition>
+		<transition id="id95">
+			<source ref="id84"/>
+			<target ref="id90"/>
+			<label kind="synchronisation" x="-153" y="-459">ev_signal?</label>
+			<label kind="assignment" x="-153" y="-442">timer=0</label>
+		</transition>
+		<transition id="id96">
+			<source ref="id89"/>
+			<target ref="id85"/>
+			<label kind="guard" x="-68" y="-204">timer&gt;=t3 &amp;&amp; timer&lt;=t4</label>
+			<label kind="assignment" x="-80" y="-182">timer=0</label>
+		</transition>
+		<transition id="id97">
+			<source ref="id88"/>
+			<target ref="id87"/>
+			<label kind="guard" x="-484" y="-323">timer&gt;=t7 &amp;&amp; timer&lt;=t8</label>
+			<label kind="assignment" x="-476" y="-297">timer=0</label>
+		</transition>
+		<transition id="id98">
 			<source ref="id87"/>
 			<target ref="id84"/>
-			<label kind="guard" x="-382" y="-331">timer&gt;=t3 &amp;&amp; timer&lt;=t4</label>
-			<label kind="synchronisation" x="-331" y="-314">signal_sensor!</label>
+			<label kind="guard" x="-408" y="-442">timer&gt;=t5 &amp;&amp; timer&lt;=t6</label>
+			<label kind="synchronisation" x="-408" y="-425">signal_sensor_down!</label>
+			<label kind="assignment" x="-416" y="-408">timer=0</label>
 		</transition>
-		<transition id="id89">
-			<source ref="id86"/>
-			<target ref="id87"/>
-			<label kind="guard" x="-569" y="-170">is_pressure==false &amp;&amp; timer&gt;=t5 &amp;&amp; timer&lt;=t6</label>
-		</transition>
-		<transition id="id90">
+		<transition id="id99">
 			<source ref="id85"/>
 			<target ref="id86"/>
-			<label kind="guard" x="-59" y="-195">timer&gt;=t3 &amp;&amp; timer&lt;=t4</label>
-			<label kind="synchronisation" x="-59" y="-178">signal_sensor!</label>
-		</transition>
-		<transition id="id91">
-			<source ref="id84"/>
-			<target ref="id85"/>
-			<label kind="guard" x="-93" y="-331">is_pressure==true &amp;&amp; timer&gt;=t1 &amp;&amp; timer&lt;=t2</label>
-			<label kind="assignment" x="-93" y="-314">timer=0</label>
+			<label kind="guard" x="-136" y="-93">timer&gt;=t5 &amp;&amp; timer&lt;=t6</label>
+			<label kind="synchronisation" x="-136" y="-76">signal_sensor_up!</label>
+			<label kind="assignment" x="-136" y="-59">timer=0</label>
 		</transition>
 	</template>
 	<system>// Instanciations of templates
@@ -539,16 +584,20 @@ greenLight = light(switch_green); // TODO: make it start switched on.
 // EVs
 broadcast chan activate_ev_gen, gen_pressure;
 broadcast chan activate_ev_cd, cd_pressure;
+broadcast chan activate_ev_rg,rg_pressure;
 
 ev_general = EV_gen(activate_ev_gen, gen_pressure);
 ev_closedoors = EV(activate_ev_cd, gen_pressure, cd_pressure);
 //ev_opendoors = EV();
-//ev_retractgears = EV();
+ev_retractgears = EV(activate_ev_rg,gen_pressure,rg_pressure);
 //ev_extendgears = EV();
 
 // Cylinders
 broadcast chan door_open,door_closed;
 cyl_door_front = Door_Cylinder(cd_pressure,door_open,door_closed,24,36,96,144,32,48);
+
+broadcast chan gear_extended,gear_retracted;
+cyl_gear_front = Gear_Cylinder(rg_pressure,gear_extended,gear_retracted,64,96,128,192,32,48,96,144);
 
 // PILOT
 broadcast chan handle;
@@ -569,8 +618,8 @@ bool is_gen_pressurized;
 
 handle_sensor = Sensor_handle(is_up, handle);
 as_sensor = Sensor_as(is_opened, handle);
-//front_gear_extracted_sensor = Sensor_gear_extracted(is_gear_extracted,...);
-//front_gear_retracted_sensor = Sensor_gear_retracted(is_gear_retracted,...);
+front_gear_extended_sensor = Sensor_gear_extended(is_gear_extended,gear_extended);
+front_gear_retracted_sensor = Sensor_gear_retracted(is_gear_retracted,gear_retracted);
 front_door_closed_sensor = Sensor_door_closed(is_door_closed,door_closed);
 front_door_open_sensor = Sensor_door_open(is_door_open,door_open);
 
@@ -583,10 +632,18 @@ gen_pressure_sensor = Sensor_circuit_pressurized(is_gen_pressurized,gen_pressure
 // Electrical orders
 elec_order_ev_gen = Electrical_order(activate_ev_gen, io_state);
 elec_order_ev_cd = Electrical_order(activate_ev_cd,is_gen_pressurized);
+elec_order_ev_rg = Electrical_order(activate_ev_rg,is_gen_pressurized);
 
 
 // List one or more processes to be composed into a system.
-system a_pilot, redLight, orangeLight, greenLight, ev_general,ev_closedoors,analog_switch,handle_sensor,as_sensor,gen_pressure_sensor,front_door_closed_sensor,front_door_open_sensor,elec_order_ev_gen,elec_order_ev_cd,cyl_door_front;
+system a_pilot, analog_switch,
+redLight, orangeLight, greenLight, 
+ev_general,ev_closedoors,ev_retractgears,
+handle_sensor,as_sensor,gen_pressure_sensor,
+front_door_closed_sensor,front_door_open_sensor,
+front_gear_extended_sensor,front_gear_retracted_sensor,
+elec_order_ev_gen,elec_order_ev_cd,elec_order_ev_rg,
+cyl_door_front,cyl_gear_front;
 </system>
 	<queries>
 		<query>
