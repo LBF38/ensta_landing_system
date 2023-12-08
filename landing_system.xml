@@ -753,8 +753,8 @@ cyl_door_front,cyl_gear_front;
 </system>
 	<queries>
 		<query>
-			<formula/>
-			<comment>Une fois le gear retracted, il existe au moins un chemin où l'on peut le rabaisser. (extended gear)</comment>
+			<formula>A[] not deadlock</formula>
+			<comment/>
 		</query>
 		<query>
 			<formula>E&lt;&gt; cyl_door_front.opened_pressure</formula>
